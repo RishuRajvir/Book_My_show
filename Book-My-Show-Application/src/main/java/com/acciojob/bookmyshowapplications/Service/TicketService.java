@@ -1,5 +1,6 @@
 package com.acciojob.bookmyshowapplications.Service;
 
+import com.acciojob.bookmyshowapplications.Enums.Genre;
 import com.acciojob.bookmyshowapplications.Exceptions.SeatUnavailableException;
 import com.acciojob.bookmyshowapplications.Models.Movie;
 import com.acciojob.bookmyshowapplications.Models.Show;
@@ -45,6 +46,8 @@ public class TicketService {
         //1. Calculate the total cost of the tickets
 
         Movie movie = movieRepository.findMovieByMovieName(bookTicketRequest.getMovieName());
+        Genre g = movie.getGenre();
+        List<Movie> recommended_movies = movieRepository.findByGenre(g);
         Theater theater = theaterRepository.findById(bookTicketRequest.getTheaterId()).get();
 
         //1.1 Find the ShowEntity with this date and Time
@@ -100,6 +103,7 @@ public class TicketService {
                 .build();
 
         ticket = ticketRepository.save(ticket);
+
 
         //4. Generate and return back the actual ticket response
 
